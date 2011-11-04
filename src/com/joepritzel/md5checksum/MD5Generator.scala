@@ -24,7 +24,7 @@ object MD5Generator {
 		
 		getFiles(dir) filterNot (_ isDirectory) foreach {
 			f =>
-				properties.setProperty(f.getPath().drop(dir.getName.length + 1), checksum(f, "MD5"))
+				properties.setProperty(f.getPath().drop(dir.getName.length + 1), checksum(f))
 		}
 		
 		val fos = new FileOutputStream("MD5CHECKSUM")
@@ -42,7 +42,7 @@ object MD5Generator {
 	/**
 	  * Generates the MD5 checksum of the given file.
 	  */
-	private def checksum(f : File, algo : String) = {
+	private def checksum(f : File, algo : String = "MD5") = {
 		val md = MessageDigest.getInstance(algo)
 		val dis = new DigestInputStream(new FileInputStream(f), md)
 		dis.read(new Array[Byte](dis.available), 0, dis.available)
